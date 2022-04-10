@@ -1,0 +1,19 @@
+.form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    .signup-form {
+        gap: 20px;
+        display: flex;
+        flex-direction: column;
+    }
+    .login-form{
+        gap: 20px;
+
+        display: flex;
+        flex-direction: column;
+
+    }
+}

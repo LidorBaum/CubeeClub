@@ -1,0 +1,65 @@
+header {
+    // display: flex;
+    box-shadow: rgba(250, 212, 212, 0.2) 0px 2px 4px -1px, rgba(0, 0, 0, 0.14) 0px 4px 5px 0px, rgba(0, 0, 0, 0.12) 0px 1px 10px 0px;
+    background-color: rgb(255, 255, 255);
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    img {
+        width: 120px;
+        cursor: pointer;
+    }
+    .profile-cart-btns {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        .cart-icon {
+            vertical-align: bottom;
+        }
+    }
+    .header-btns{
+        display: flex;
+        gap: 20px;
+    }
+}
+.login-form-container {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    align-items: center;
+    color: $clr1;
+    p {
+        margin: 0;
+        font-size: 28px;
+    }
+    // padding: 2px;
+    .login-form {
+        // text-align: center;
+        // margin: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+        > * {
+            width: 240px;
+            // height: 100px;
+        }
+        .login-btn {
+            height: 50px;
+        }
+    }
+}
+@media only screen and (max-width: 750px) {
+    .login-form-container {
+        justify-content: space-evenly;
+        p {
+            font-size: 18px;
+        }
+        .login-form {
+            // flex-grow: 1;
+            .login-btn {
+                flex-grow: 1;
+            }
+        }
+    }
+}
