@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { TextField, Button } from '@mui/material';
-import { createUserWithEmailAndPassword } from '@firebase/auth';
-import { auth } from '../firebase';
+import Backdrop from '@mui/material/Backdrop';
+import { OrbitSpinner } from 'react-epic-spinners';
 import { useAuth } from '../contexts/AuthContext';
 import { useHistory } from 'react-router-dom';
-export const LoginSignup = () => {
+
+export const LoginSignup = props => {
     const history = useHistory();
     const [isLoading, setIsLoading] = useState(false);
     const [isNewUser, setIsNewUser] = useState(false);
@@ -15,29 +16,48 @@ export const LoginSignup = () => {
     const [signupCred, setSignupCred] = useState({
         email: '',
         password: '',
+        name: '',
+        phoneNumber: '',
     });
-    const { signup, login, currentUser, logout } = useAuth();
+    const { signup, login, currentUser } = useAuth();
+
+    const [isFromCart, setIsFromCart] = useState(false);
+    useEffect(() => {
+        const search = props.location.search;
+        const params = new URLSearchParams(search);
+        const isFromCart = params.get('fromCart');
+        setIsFromCart(isFromCart);
+    }, [props.location.search]);
 
     const onLogin = async e => {
         e.preventDefault();
+        setIsLoading(true);
         console.log('logging in');
         try {
             const res = await login(loginCred.email, loginCred.password);
-            console.log(res);
             setTimeout(() => {
+                if (isFromCart) return history.push('/cart');
                 history.push('/dashboard');
-            }, 3000);
-            // const user = await createUserWithEmailAndPassword(auth, loginCred.email, loginCred.password)
-            // console.log(user);
+            }, 1000);
         } catch (err) {
             console.log(err.message);
+            setIsLoading(false);
         }
     };
     const onSignup = async e => {
         e.preventDefault();
-        signup(signupCred.email, signupCred.password);
+        setIsLoading(true);
+        try {
+            const res = await signup(signupCred);
+            setTimeout(() => {
+                if (isFromCart) return history.push('/cart');
+                history.push('/dashboard');
+            }, 1600);
+        } catch (err) {
+            console.log(err.message);
+            setIsLoading(false);
+        }
     };
-    const onLogout = async () => {};
 
     const handleChange = e => {
         e.persist();
@@ -56,20 +76,45 @@ export const LoginSignup = () => {
         });
     };
 
+    useEffect(() => {
+        if (currentUser) history.push('/dashboard');
+    }, [currentUser]);
+
     const signupForm = (
         <>
-            <h1>הירשם</h1>
+            <h3>
+                הירשם כדי לבצע הזמנה, לצפות בהזמנות קודמות ולעדכן פרטים אישיים
+            </h3>
             <form className="signup-form" id="signup-form" onSubmit={onSignup}>
                 <TextField
+                    placeholder="שם מלא"
                     required
-                    label="Email"
+                    // label="שם מלא"
+                    name="name"
+                    value={signupCred.name}
+                    onChange={signupHandleChange}
+                />
+                <TextField
+                    placeholder="מספר טלפון"
+                    required
+                    // label="מספר טלפון"
+                    name="phoneNumber"
+                    value={signupCred.phoneNumber}
+                    onChange={signupHandleChange}
+                />
+                <TextField
+                    required
+                    placeholder="אימייל"
+                    // label="Email"
                     name="email"
                     value={signupCred.email}
                     onChange={signupHandleChange}
                     dir="ltr"
+                    color="cubee"
                 />
                 <TextField
-                    label="Password"
+                    placeholder="סיסמה"
+                    // label="Password"
                     name="password"
                     value={signupCred.password}
                     onChange={signupHandleChange}
@@ -77,31 +122,41 @@ export const LoginSignup = () => {
                     dir="ltr"
                 />
                 <Button
-                    className="login-btn"
+                    className="signup-btn btn"
                     variant="contained"
                     disabled={isLoading}
                     type="submit"
                 >
-                    Login
+                    הירשם
                 </Button>
             </form>
+            <Button
+                className="switch-form-btn btn"
+                variant="contained"
+                onClick={() => setIsNewUser(!isNewUser)}
+                color="secondary"
+            >
+                נרשמת כבר? לחץ כאן כדי להתחבר
+            </Button>
         </>
     );
 
     const loginForm = (
         <>
-            <h1>התחבר</h1>
+            <h3>התחבר כדי לצפות בהזמנות הקודמות שלך ולעדכן פרטים אישיים</h3>
             <form className="login-form" id="login-form" onSubmit={onLogin}>
                 <TextField
+                    placeholder="אימייל"
                     required
-                    label="Email"
+                    // label="Email"
                     name="email"
                     value={loginCred.email}
                     onChange={handleChange}
                     dir="ltr"
                 />
                 <TextField
-                    label="Password"
+                    placeholder="סיסמה"
+                    // label="Password"
                     name="password"
                     value={loginCred.password}
                     onChange={handleChange}
@@ -109,14 +164,22 @@ export const LoginSignup = () => {
                     dir="ltr"
                 />
                 <Button
-                    className="login-btn"
+                    className="login-btn btn"
                     variant="contained"
                     disabled={isLoading}
                     type="submit"
                 >
-                    Login
+                    התחבר
                 </Button>
             </form>
+            <Button
+                className="switch-form-btn btn"
+                variant="contained"
+                onClick={() => setIsNewUser(!isNewUser)}
+                color="secondary"
+            >
+                עדיין לא נרשמת? לחץ כדי להירשם
+            </Button>
         </>
     );
     return (
@@ -124,12 +187,15 @@ export const LoginSignup = () => {
             <div className="form-container">
                 {isNewUser ? signupForm : loginForm}
             </div>
-            <Button onClick={() => setIsNewUser(!isNewUser)}>
-                Switch Form
-            </Button>
-            <div>
-                <h1>{currentUser?.email}</h1>
-            </div>
+            <Backdrop
+                sx={{ color: '#fff', zIndex: theme => theme.zIndex.drawer + 1 }}
+                open={isLoading}
+                // onClick={setIsLoading(false)}
+            >
+                <div className="loader">
+                    <OrbitSpinner color="#fbc02d" size={300} />
+                </div>
+            </Backdrop>
         </>
     );
 };

@@ -1,33 +1,82 @@
 .cart-page {
+    .total-cta {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px;
+        margin: 0 20px;
+        .btn {
+            height: 40px;
+            font-family: varela;
+        }
+    }
+    .cart-list-scroll {
+        height: 50vh;
+        overflow: auto;
+    }
     .cart-cont {
         width: '100%';
         display: flex;
         justify-content: center;
         align-items: center;
         flex-direction: column;
+        gap: 5px;
+        padding: 20px;
+        // overflow: auto;
+
         .cart-product-card {
             display: flex;
             justify-content: space-between;
             align-items: center;
             gap: 10px;
-            width: 95%;
-            height: 120px;
+            width: 85%;
+            height: 140px;
+            border: 3px solid rgba(254, 255, 212, 0.055);
+            padding: 20px;
+            box-shadow: 0px 0px 16px 4px rgba(0, 0, 0, 0.172);
+            h5 {
+                margin: 0;
+            }
+
             .cart-product-img {
                 width: 120px;
                 height: 120px;
+                object-fit: cover;
             }
             .actions-btn {
                 display: flex;
-                gap: 10px;
+                gap: 15px;
                 justify-content: center;
                 align-items: center;
+                .quantity-field {
+                    width: 80px;
+                }
+                h4,
                 h6 {
                     margin: 0;
+                    span {
+                        text-decoration: line-through;
+                        font-weight: 400;
+                    }
+                }
+                p {
+                    margin: 0;
+                    text-align: center;
+                    font-weight: 800;
+                    width: 30px;
+                }
+                .quantity-btns {
+                    display: flex;
                 }
             }
         }
     }
     h2 {
         margin-top: 30px;
+    }
+}
+.delivery-choose-cont {
+    .back-btn {
+        margin-bottom: 20px;
     }
 }

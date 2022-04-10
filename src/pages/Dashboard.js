@@ -12,8 +12,10 @@ export const Dashboard = () => {
     };
     return (
         <>
-            <h1>Dashboard</h1>
-            <h2>{currentUser.email}</h2>
+            <h1>מידע אישי והזמנות</h1>
+
+            <h2 className="ltr">{currentUser.email}</h2>
+            <h2>{currentUser.name}</h2>
             <Button variant="contained" type="submit" onClick={onLogout}>
                 logout
             </Button>

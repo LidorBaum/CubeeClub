@@ -5,9 +5,8 @@ import {
     signOut,
 } from '@firebase/auth';
 import { auth } from '../firebase';
-import { collection, getDoc, doc } from 'firebase/firestore';
+import { collection, getDoc, doc, addDoc, setDoc } from 'firebase/firestore';
 import { db } from '../firebase';
-// import { signInWithEmailAndPassword } from 'firebase/auth'
 const AuthContext = React.createContext();
 
 export function useAuth() {
@@ -18,8 +17,18 @@ export function AuthProvider({ children }) {
     const [currentUser, setCurrentUser] = useState();
     const [loading, setLoading] = useState(true);
 
-    const signup = (email, password) => {
-        return createUserWithEmailAndPassword(auth, email, password);
+    const signup = newUserCreds => {
+        createUserWithEmailAndPassword(
+            auth,
+            newUserCreds.email,
+            newUserCreds.password
+        ).then(userCreds => {
+            setDoc(doc(db, 'Users', userCreds.user.uid), {
+                name: newUserCreds.name,
+                phoneNumber: newUserCreds.phoneNumber,
+                email: newUserCreds.email,
+            });
+        });
     };
 
     const login = (email, password) => {

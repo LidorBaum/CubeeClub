@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { Button } from '@mui/material';
+import { Transition, animated } from 'react-spring';
+
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 export function ProductPreview({ product, addToCart, onProductClick }) {
     const onAddToCart = e => {
@@ -20,19 +22,27 @@ export function ProductPreview({ product, addToCart, onProductClick }) {
             <div className="product-image-cont">
                 <img className="product-image" src={product.images[0]?.src} />
                 {isHover && (
-                    <div className="btn">
+                    <animated.div
+                        // style={{
+                        //     opacity: opacity.to({
+                        //         range: [0.0, 1.0], output: [0, 1]
+                        //     })
+                        // }}
+                        className="btn"
+                    >
                         <Button
                             variant="contained"
-                            color="secondary"
+                            // sx={{ color: blueGrey[700] }}
+                            color="cubee"
                             onClick={onAddToCart}
                         >
                             <AddShoppingCartIcon
                                 className="cart-icon"
-                                color="primary"
+                                color="black"
                                 fontSize="small"
                             />
                         </Button>
-                    </div>
+                    </animated.div>
                 )}
             </div>
         </div>

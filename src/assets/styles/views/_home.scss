@@ -6,6 +6,7 @@
         align-items: center;
         list-style-type: none;
         height: 40px;
+        color: $clr2;
         li {
             cursor: pointer;
             width: 140px;
@@ -16,8 +17,8 @@
         }
         .active {
             // font-size: 25px;
-            font-weight: 600;
-
+            font-weight: 800;
+            color: $clr4;
             //     text-shadow: -1.2px -1.2px 0 #2d88d7,
             //     1.2px -1.2px 0 #2d88d7,
             //     -1.2px 1.2px 0 #2d88d7,
@@ -65,7 +66,7 @@
                     width: 100px;
                     height: 40px;
                     // left: '50%';
-                    top: 100px;
+                    top: 130px;
                 }
             }
         }

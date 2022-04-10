@@ -10,7 +10,7 @@
 html {
     font-family: varela;
     line-height: 1.6;
-    color: $clr2;
+    color: $clr1;
     height: 100%;
     scroll-behavior: smooth;
     direction: rtl;
@@ -37,7 +37,7 @@ h6 {
 }
 
 h1 {
-    font-size: rem(68px);
+    font-size: 4rem;
 }
 
 img {
@@ -57,7 +57,41 @@ p {
     flex-grow: 1;
     padding: 20px;
 }
+@keyframes loader-anim {
+    0% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(100px);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
 .loader {
     justify-content: center;
     display: flex;
+    animation-name: loader-anim;
+    animation-duration: 1.5s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in-out;
+}
+.ltr {
+    direction: ltr;
+    width: fit-content;
+}
+.cart-icon {
+    font-weight: 600 !important;
+}
+.center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    .btn {
+        font-family: varela;
+    }
+}
+.btn {
+    font-family: varela !important;
 }

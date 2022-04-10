@@ -1,10 +1,11 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
-import { OrbitSpinner } from 'react-epic-spinners';
 import { CartContext } from '../contexts/CartContext';
 import Cookies from 'js-cookie';
 import Axios from 'axios';
 import { ProductList } from '../cmps/ProductList';
+import Lottie from 'lottie-react';
+import printer from '../assets/json/63871-lottie-printer.json';
 
 const axios = Axios.create({
     withCredentials: true,
@@ -69,8 +70,6 @@ export const Home = props => {
             regular_price: product.regular_price,
             quantity: 1,
         };
-        // if (productToAdd.quantity < 1)
-        //     return notificationHandler.error(quantity0);
         for (let i = 0; i < cart.length; i++) {
             if (cart[i].id === productToAdd.id) {
                 isExist = true;
@@ -97,7 +96,7 @@ export const Home = props => {
     if (!products.length)
         return (
             <div className="loader">
-                <OrbitSpinner color="blue" size={300} />
+                <Lottie animationData={printer} loop={true} autoPlay={true} />
             </div>
         );
     return (
@@ -120,19 +119,6 @@ export const Home = props => {
                 addToCart={addToCart}
                 onProductClick={onProductClick}
             />
-            {/* <div className='prod-list'>
-                {products.map(prod => {
-                    return (
-                        <div className="prod-card"
-                        onClick={()=>onProductClick(prod)}
-                        key={prod.id}
-                        >
-                            <h4>{prod.name}</h4>
-                            <img src={prod.images[0]?.src}></img>
-                        </div>
-                    )
-                })}
-            </div> */}
         </div>
     );
 };
