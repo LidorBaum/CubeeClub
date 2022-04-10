@@ -7,15 +7,17 @@ import IconButton from '@mui/material/IconButton';
 import { CartContext } from '../contexts/CartContext';
 import Cookies from 'js-cookie';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
+import { SnackbarHandlerContext } from '../contexts/SnackbarHandlerContext';
+
 import Axios from 'axios';
 const axios = Axios.create({
     withCredentials: true,
 });
 
 export const Product = props => {
+    const notificationHandler = useContext(SnackbarHandlerContext);
     const [product, setProduct] = useState(null);
     const { cart, setCart } = useContext(CartContext);
-
     const [selectedQuantity, setQuantity] = useState(1);
     const [isDisabled, setIsDisabled] = useState(false);
     useEffect(() => {
@@ -69,6 +71,7 @@ export const Product = props => {
                 newCartArr.splice(i, 1, productToModify);
                 setCart(newCartArr);
                 Cookies.set('cart', JSON.stringify(newCartArr));
+                notificationHandler.success('המוצר התווסף לעגלה');
                 return respawnButton();
             }
         }
@@ -78,6 +81,7 @@ export const Product = props => {
         const cartArr = [...cart, productToAdd];
         Cookies.set('cart', JSON.stringify(cartArr));
         respawnButton();
+        notificationHandler.success('המוצר התווסף לעגלה');
         //NOTIFICATION ADDED / UPDATED CART
     };
     const respawnButton = () => {

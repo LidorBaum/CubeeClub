@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Button } from '@mui/material';
-import { Transition, animated } from 'react-spring';
 
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 export function ProductPreview({ product, addToCart, onProductClick }) {
@@ -22,7 +21,7 @@ export function ProductPreview({ product, addToCart, onProductClick }) {
             <div className="product-image-cont">
                 <img className="product-image" src={product.images[0]?.src} />
                 {isHover && (
-                    <animated.div
+                    <div
                         // style={{
                         //     opacity: opacity.to({
                         //         range: [0.0, 1.0], output: [0, 1]
@@ -42,7 +41,7 @@ export function ProductPreview({ product, addToCart, onProductClick }) {
                                 fontSize="small"
                             />
                         </Button>
-                    </animated.div>
+                    </div>
                 )}
             </div>
         </div>

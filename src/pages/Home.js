@@ -6,6 +6,7 @@ import Axios from 'axios';
 import { ProductList } from '../cmps/ProductList';
 import Lottie from 'lottie-react';
 import printer from '../assets/json/63871-lottie-printer.json';
+import { SnackbarHandlerContext } from '../contexts/SnackbarHandlerContext';
 
 const axios = Axios.create({
     withCredentials: true,
@@ -35,6 +36,8 @@ const categories = [
 ];
 
 export const Home = props => {
+    const notificationHandler = useContext(SnackbarHandlerContext);
+
     const [products, setProducts] = useState([]);
     let history = useHistory();
     const [selectedCat, setSelectedCat] = useState('הכל');
@@ -60,8 +63,6 @@ export const Home = props => {
         setSelectedCat(catName);
     };
     const addToCart = product => {
-        let isExist = false;
-        console.log(product);
         const productToAdd = {
             id: product.id,
             name: product.name,
@@ -72,7 +73,6 @@ export const Home = props => {
         };
         for (let i = 0; i < cart.length; i++) {
             if (cart[i].id === productToAdd.id) {
-                isExist = true;
                 let newCartArr = [...cart];
                 const productToModify = cart[i];
                 productToModify.quantity =
@@ -80,17 +80,15 @@ export const Home = props => {
                 newCartArr.splice(i, 1, productToModify);
                 setCart(newCartArr);
                 Cookies.set('cart', JSON.stringify(newCartArr));
-                break;
+                return notificationHandler.success('המוצר התווסף לעגלה');
             }
         }
-        if (!isExist) {
-            setCart(prevCart => {
-                return [...prevCart, productToAdd];
-            });
-            const cartArr = [...cart, productToAdd];
-            Cookies.set('cart', JSON.stringify(cartArr));
-        }
-        //NOTIFICATION ADDED / UPDATED CART
+        setCart(prevCart => {
+            return [...prevCart, productToAdd];
+        });
+        const cartArr = [...cart, productToAdd];
+        Cookies.set('cart', JSON.stringify(cartArr));
+        notificationHandler.success('המוצר התווסף לעגלה');
     };
 
     if (!products.length)

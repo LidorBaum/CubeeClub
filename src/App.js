@@ -14,6 +14,11 @@ import { collection, getDocs } from 'firebase/firestore';
 import { db } from './firebase';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import DeliveryChoose from './pages/DeliveryChoose';
+import { SnackbarHandlerContext } from './contexts/SnackbarHandlerContext';
+import { SnackbarContext } from './contexts/SnackbarContext';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
+import Slide from '@mui/material/Slide';
 
 const theme = createTheme({
     palette: {
@@ -40,8 +45,37 @@ const theme = createTheme({
 
 function App() {
     const [cart, setCart] = useState([]);
-    const [users, setUsers] = useState([]);
-    const usersCollRef = collection(db, 'Users');
+    // const [users, setUsers] = useState([]);
+
+    const [snack, setSnack] = useState({});
+    const notificationHandler = {
+        success: message => showNotification('success', message),
+        error: message => showNotification('error', message),
+        info: message => showNotification('info', message),
+        warning: message => showNotification('warning', message),
+    };
+    const showNotification = (severity, message) => {
+        const snackObj = { severity, message, open: true };
+        if (snack.open) {
+            setSnack(prevSnack => {
+                return { ...prevSnack, open: false };
+            });
+            return setTimeout(() => {
+                setSnack(snackObj);
+            }, 100);
+        } else setSnack(snackObj);
+    };
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        setSnack(prevSnack => {
+            return { ...prevSnack, open: false };
+        });
+    };
+
+    // const usersCollRef = collection(db, 'Users');
+
     useEffect(() => {
         if (Cookies.get('cart')) {
             const cartJson = JSON.parse(Cookies.get('cart'));
@@ -51,52 +85,84 @@ function App() {
         }
     }, []);
 
-    useEffect(() => {
-        const getUsers = async () => {
-            const data = await getDocs(usersCollRef);
-            setUsers(data.docs.map(doc => ({ ...doc.data(), id: doc.id })));
-        };
-        getUsers();
-    }, []);
+    // useEffect(() => {
+    //     const getUsers = async () => {
+    //         const data = await getDocs(usersCollRef);
+    //         setUsers(data.docs.map(doc => ({ ...doc.data(), id: doc.id })));
+    //     };
+    //     getUsers();
+    // }, []);
 
     return (
         <ThemeProvider theme={theme}>
             <AuthProvider>
                 <CartContext.Provider value={{ cart, setCart }}>
-                    <div className="App">
-                        <Router>
-                            <Header />
-                            <div className="content">
-                                <Switch>
-                                    <Route path="/" exact component={Home} />
-                                    <Route
-                                        path="/login"
-                                        exact
-                                        component={LoginSignup}
-                                    />
-                                    <Route
-                                        path="/cart"
-                                        exact
-                                        component={Cart}
-                                    />
-                                    <Route
-                                        path="/cart/delivery"
-                                        exact
-                                        component={DeliveryChoose}
-                                    />
-                                    <PrivateRoute
-                                        path="/dashboard"
-                                        exact
-                                        component={Dashboard}
-                                    />
-                                    <Route
-                                        path="/products/:productId"
-                                        component={Product}
-                                    />
-                                </Switch>
+                    <SnackbarHandlerContext.Provider
+                        value={notificationHandler}
+                    >
+                        <SnackbarContext.Provider value={{ snack, setSnack }}>
+                            {
+                                <Snackbar
+                                    TransitionComponent={Slide}
+                                    onClose={handleClose}
+                                    autoHideDuration={3000}
+                                    anchorOrigin={{
+                                        vertical: 'bottom',
+                                        horizontal: 'center',
+                                    }}
+                                    dir="ltr"
+                                    open={snack.open}
+                                >
+                                    <Alert
+                                        onClose={handleClose}
+                                        severity={snack.severity}
+                                        sx={{ width: '100%' }}
+                                    >
+                                        {snack.message}
+                                        {/* <Button onClick={handleClose}>Share</Button> */}
+                                    </Alert>
+                                </Snackbar>
+                            }
+                            <div className="App">
+                                <Router>
+                                    <Header />
+                                    <div className="content">
+                                        <Switch>
+                                            <Route
+                                                path="/"
+                                                exact
+                                                component={Home}
+                                            />
+                                            <Route
+                                                path="/login"
+                                                exact
+                                                component={LoginSignup}
+                                            />
+                                            <Route
+                                                path="/cart"
+                                                exact
+                                                component={Cart}
+                                            />
+                                            <Route
+                                                path="/cart/delivery"
+                                                exact
+                                                component={DeliveryChoose}
+                                            />
+                                            <PrivateRoute
+                                                path="/dashboard"
+                                                exact
+                                                component={Dashboard}
+                                            />
+                                            <Route
+                                                path="/products/:productId"
+                                                component={Product}
+                                            />
+                                        </Switch>
+                                    </div>
+                                </Router>
                             </div>
-                        </Router>
-                    </div>
+                        </SnackbarContext.Provider>
+                    </SnackbarHandlerContext.Provider>
                 </CartContext.Provider>
             </AuthProvider>
         </ThemeProvider>

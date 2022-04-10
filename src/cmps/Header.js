@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import Typography from '@mui/material/Typography';
+import { Button } from '@mui/material';
 import { NavLink } from 'react-router-dom';
 import { CartContext } from '../contexts/CartContext';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
@@ -7,11 +8,13 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import Tooltip from '@mui/material/Tooltip';
 import { Badge } from '@mui/material';
 import { useAuth } from '../contexts/AuthContext';
+import { SnackbarHandlerContext } from '../contexts/SnackbarHandlerContext';
 import { blueGrey } from '@mui/material/colors';
 
 export const Header = () => {
     const { currentUser } = useAuth();
     const { cart } = useContext(CartContext);
+    const notificationHandler = useContext(SnackbarHandlerContext);
     const [cartBadgeCount, setCartBadgeCount] = useState(0);
     useEffect(() => {
         let counter = 0;

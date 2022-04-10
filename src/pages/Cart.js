@@ -5,6 +5,7 @@ import { CartContext } from '../contexts/CartContext';
 import Cookies from 'js-cookie';
 import { useHistory } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { Scrollbars } from 'react-custom-scrollbars-2';
 
 export const Cart = () => {
     const { currentUser } = useAuth();
@@ -53,18 +54,24 @@ export const Cart = () => {
             <div className="cart-page">
                 <h1>עגלת קניות</h1>
                 <div className="cart-list-scroll">
-                    <div className="cart-cont">
-                        {cart.map(productObj => {
-                            return (
-                                <CartPreview
-                                    key={productObj.id}
-                                    productObj={productObj}
-                                    removeProduct={removeProduct}
-                                    changeQuantity={changeQuantity}
-                                />
-                            );
-                        })}
-                    </div>
+                    <Scrollbars
+                        autoHide
+                        autoHideTimeout={4000}
+                        autoHideDuration={400}
+                    >
+                        <div className="cart-cont">
+                            {cart.map(productObj => {
+                                return (
+                                    <CartPreview
+                                        key={productObj.id}
+                                        productObj={productObj}
+                                        removeProduct={removeProduct}
+                                        changeQuantity={changeQuantity}
+                                    />
+                                );
+                            })}
+                        </div>
+                    </Scrollbars>
                 </div>
                 <div className={'total-cta'}>
                     {total !== 0 && <h2>סך הכל: {total} ₪</h2>}

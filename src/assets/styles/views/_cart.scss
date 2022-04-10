@@ -12,7 +12,9 @@
     }
     .cart-list-scroll {
         height: 50vh;
-        overflow: auto;
+        ::-webkit-scrollbar {
+            display: none;
+        }
     }
     .cart-cont {
         width: '100%';

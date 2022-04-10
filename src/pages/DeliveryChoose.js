@@ -45,7 +45,7 @@ export default function DeliveryChoose() {
                 {shippingMethods.map(method => {
                     if (method.settings.cost.value)
                         return (
-                            <h3>
+                            <h3 key={method.title}>
                                 {method.title}, {method.settings.cost.value}₪
                             </h3>
                         );
