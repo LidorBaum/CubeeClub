@@ -9,10 +9,9 @@ const axios = Axios.create({
     withCredentials: true,
 });
 
-
 export const Product = props => {
     const [product, setProduct] = useState(null);
-    const [selectedQuantity, setQuantity] = useState(1)
+    const [selectedQuantity, setQuantity] = useState(1);
 
     useEffect(() => {
         const getProduct = async () => {
@@ -33,34 +32,40 @@ export const Product = props => {
             if (quantity < 1 || quantity > 10) {
                 console.log('please enter valid value');
                 //NOTIFICATION ERROR
-                return
-            }
-            else setQuantity(quantity)
-        }
-        else {
-            if (quantity + selectedQuantity < 1 || quantity + selectedQuantity > 10) {
+                return;
+            } else setQuantity(quantity);
+        } else {
+            if (
+                quantity + selectedQuantity < 1 ||
+                quantity + selectedQuantity > 10
+            ) {
                 console.log('please enter valid value');
                 //NOTIFICATION ERROR
-                return
-            }
-            else setQuantity(prev => prev + quantity)
+                return;
+            } else setQuantity(prev => prev + quantity);
         }
-    }
+    };
 
-    if (!product) return <div className="loader">
-        <OrbitSpinner color="blue" size={300} />
-    </div>
+    if (!product)
+        return (
+            <div className="loader">
+                <OrbitSpinner color="blue" size={300} />
+            </div>
+        );
     const description = parse(product.description);
     return (
         <>
-            <div className='product-hero'>
-                <img className='product-image' src={product.images[0]?.src} />
-                <div className='details'>
+            <div className="product-hero">
+                <img className="product-image" src={product.images[0]?.src} />
+                <div className="details">
                     <h3>{product.name}</h3>
-                    <h4> <span>{product.regular_price}₪</span> {product.price}₪</h4>
-                    <div className='quantity-btns'>
+                    <h4>
+                        {' '}
+                        <span>{product.regular_price}₪</span> {product.price}₪
+                    </h4>
+                    <div className="quantity-btns">
                         <Button
-                            variant='text'
+                            variant="text"
                             onClick={() => handleQuantityChange(1, false)}
                         >
                             <AddIcon
@@ -69,9 +74,24 @@ export const Product = props => {
                                 fontSize="small"
                             />
                         </Button>
-                        <TextField className='quantity-field' type='number' onFocus={(e) => e.target.select()} onChange={(e) => handleQuantityChange(Number(e.target.value), true)} id="outlined-basic" size='small' value={selectedQuantity} label="כמות" variant="outlined" />
+                        <TextField
+                            className="quantity-field"
+                            type="number"
+                            onFocus={e => e.target.select()}
+                            onChange={e =>
+                                handleQuantityChange(
+                                    Number(e.target.value),
+                                    true
+                                )
+                            }
+                            id="outlined-basic"
+                            size="small"
+                            value={selectedQuantity}
+                            label="כמות"
+                            variant="outlined"
+                        />
                         <Button
-                            variant='text'
+                            variant="text"
                             onClick={() => handleQuantityChange(-1, false)}
                         >
                             <RemoveCircleIcon
@@ -81,24 +101,17 @@ export const Product = props => {
                             />
                         </Button>
                     </div>
-                    {selectedQuantity > 1 ?
-                        <Button
-                            variant='contained'
-                        >
+                    {selectedQuantity > 1 ? (
+                        <Button variant="contained">
                             הוסף לעגלה ({selectedQuantity * product.price}₪)
-                        </Button> :
-                        <Button
-                            variant='contained'
-                        >
-                            הוסף לעגלה
                         </Button>
-                    }
+                    ) : (
+                        <Button variant="contained">הוסף לעגלה</Button>
+                    )}
                 </div>
             </div>
 
-            <div className='product-desc'>
-                {description}
-            </div>
+            <div className="product-desc">{description}</div>
         </>
     );
 };

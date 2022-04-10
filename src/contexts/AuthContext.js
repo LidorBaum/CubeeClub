@@ -34,16 +34,15 @@ export function AuthProvider({ children }) {
         const unsubscribe = auth.onAuthStateChanged(user => {
             const foo = async () => {
                 if (user) {
-                    const docRef = doc(db, "Users", user.uid);
+                    const docRef = doc(db, 'Users', user.uid);
                     const docSnap = await getDoc(docRef);
-                    console.log("Document data:", docSnap.data());
+                    console.log('Document data:', docSnap.data());
                     setCurrentUser({ ...user, ...docSnap.data() });
-                }
-                else setCurrentUser(user)
+                } else setCurrentUser(user);
                 setLoading(false);
                 console.log('signed', user);
-            }
-            foo()
+            };
+            foo();
         });
         return unsubscribe;
     }, []);

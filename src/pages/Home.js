@@ -101,7 +101,7 @@ export const Home = props => {
             </div>
         );
     return (
-        <div className='product-catalog'>
+        <div className="product-catalog">
             <ul>
                 {categories.map(cat => {
                     return (

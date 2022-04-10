@@ -14,27 +14,26 @@
             text-align: center;
         }
         h4 {
-            span{
+            span {
                 text-decoration: line-through;
             }
             text-align: center;
         }
-        .quantity-btns{
+        .quantity-btns {
             display: flex;
             gap: 20px;
             justify-content: center;
-            .quantity-field{
+            .quantity-field {
                 width: 100px;
             }
         }
     }
 }
-.product-desc{
+.product-desc {
     margin-top: 20px;
-    img{
+    img {
         width: 500px;
         margin: 20px 20% auto;
         text-align: center;
-
     }
 }

@@ -24,9 +24,9 @@ export const LoginSignup = () => {
         try {
             const res = await login(loginCred.email, loginCred.password);
             console.log(res);
-            setTimeout(()=>{
+            setTimeout(() => {
                 history.push('/dashboard');
-            }, 3000)
+            }, 3000);
             // const user = await createUserWithEmailAndPassword(auth, loginCred.email, loginCred.password)
             // console.log(user);
         } catch (err) {
