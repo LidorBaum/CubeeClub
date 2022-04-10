@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from "react"
+import React, { useContext, useEffect, useState } from 'react';
 import Typography from '@mui/material/Typography';
 import { NavLink } from 'react-router-dom';
 import { CartContext } from '../contexts/CartContext';
@@ -21,25 +21,23 @@ import LoginIcon from '@mui/icons-material/Login';
 import FaceIcon from '@mui/icons-material/Face';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { Badge, TextField } from '@mui/material';
-import { useAuth } from '../contexts/AuthContext'
-
+import { useAuth } from '../contexts/AuthContext';
 
 export const Header = () => {
-    const { currentUser } = useAuth()
+    const { currentUser } = useAuth();
     const { cart } = useContext(CartContext);
-    const [cartBadgeCount, setCartBadgeCount] = useState(0)
+    const [cartBadgeCount, setCartBadgeCount] = useState(0);
 
-    useEffect(()=>{
+    useEffect(() => {
         let counter = 0;
-        cart.forEach(product =>{
-            return counter += product.quantity
-        })
-        setCartBadgeCount(counter)
-    },[cart])
+        cart.forEach(product => {
+            return (counter += product.quantity);
+        });
+        setCartBadgeCount(counter);
+    }, [cart]);
     return (
         <header>
-            <NavLink
-                to="/">
+            <NavLink to="/">
                 <Typography
                     variant="h6"
                     noWrap
@@ -57,22 +55,18 @@ export const Header = () => {
                     />
                 </Typography>
             </NavLink>
-            <div className='header-btns'>
+            <div className="header-btns">
                 <NavLink
-                    to={currentUser ? "/dashboard" : "/login"}
+                    to={currentUser ? '/dashboard' : '/login'}
                     style={{ textDecoration: 'none' }}
                 >
-
                     <AccountCircle
                         className="cart-icon"
                         color="warning"
                         fontSize="large"
                     />
                 </NavLink>
-                <NavLink
-                    to="/cart"
-                    style={{ textDecoration: 'none' }}
-                >
+                <NavLink to="/cart" style={{ textDecoration: 'none' }}>
                     <Badge
                         className="cart-icon"
                         badgeContent={cartBadgeCount}
@@ -89,5 +83,5 @@ export const Header = () => {
                 <h2>{currentUser?.email}</h2>
             </div>
         </header>
-    )
-}
+    );
+};
