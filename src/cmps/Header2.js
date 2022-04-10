@@ -35,6 +35,7 @@ export const Header = () => {
         });
         setCartBadgeCount(counter);
     }, [cart]);
+
     return (
         <header>
             <NavLink to="/">

@@ -46,7 +46,7 @@ img {
 
 p {
     margin: 0 0 1em;
-    max-width: 40ch;
+    width: 80%;
 }
 .App {
     display: flex;
@@ -56,4 +56,8 @@ p {
 .content {
     flex-grow: 1;
     padding: 20px;
+}
+.loader{
+    justify-content: center;
+    display: flex;
 }

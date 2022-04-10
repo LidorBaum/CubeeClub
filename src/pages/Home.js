@@ -91,16 +91,17 @@ export const Home = props => {
             const cartArr = [...cart, productToAdd];
             Cookies.set('cart', JSON.stringify(cartArr));
         }
+        //NOTIFICATION ADDED / UPDATED CART
     };
 
     if (!products.length)
         return (
-            <div className="prod-list">
+            <div className="loader">
                 <OrbitSpinner color="blue" size={300} />
             </div>
         );
     return (
-        <div>
+        <div className='product-catalog'>
             <ul>
                 {categories.map(cat => {
                     return (

@@ -45,9 +45,6 @@ function App() {
                 <div className="App">
                     <Router>
                         <Header />
-                        {users.map(user => {
-                            return <h1>{user.name}</h1>;
-                        })}
                         <div className="content">
                             <Switch>
                                 <Route path="/" exact component={Home} />

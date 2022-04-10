@@ -20,9 +20,13 @@ export const LoginSignup = () => {
 
     const onLogin = async e => {
         e.preventDefault();
+        console.log('logging in');
         try {
             const res = await login(loginCred.email, loginCred.password);
-            history.push('/dashboard');
+            console.log(res);
+            setTimeout(()=>{
+                history.push('/dashboard');
+            }, 3000)
             // const user = await createUserWithEmailAndPassword(auth, loginCred.email, loginCred.password)
             // console.log(user);
         } catch (err) {
@@ -123,7 +127,7 @@ export const LoginSignup = () => {
             <Button onClick={() => setIsNewUser(!isNewUser)}>
                 Switch Form
             </Button>
-            <div class>
+            <div>
                 <h1>{currentUser?.email}</h1>
             </div>
         </>

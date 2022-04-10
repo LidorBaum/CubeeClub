@@ -5,6 +5,8 @@ import {
     signOut,
 } from '@firebase/auth';
 import { auth } from '../firebase';
+import { collection, getDoc, doc } from 'firebase/firestore';
+import { db } from '../firebase';
 // import { signInWithEmailAndPassword } from 'firebase/auth'
 const AuthContext = React.createContext();
 
@@ -30,9 +32,18 @@ export function AuthProvider({ children }) {
 
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged(user => {
-            setCurrentUser(user);
-            setLoading(false);
-            console.log('signed', user);
+            const foo = async () => {
+                if (user) {
+                    const docRef = doc(db, "Users", user.uid);
+                    const docSnap = await getDoc(docRef);
+                    console.log("Document data:", docSnap.data());
+                    setCurrentUser({ ...user, ...docSnap.data() });
+                }
+                else setCurrentUser(user)
+                setLoading(false);
+                console.log('signed', user);
+            }
+            foo()
         });
         return unsubscribe;
     }, []);
